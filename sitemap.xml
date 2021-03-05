@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://doodlexu.github.io/tags/index.html</loc>
+    
+    <lastmod>2021-03-05</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://doodlexu.github.io/posts/4099/</loc>
     
     <lastmod>2021-03-05</lastmod>
@@ -65,13 +72,6 @@
   </url>
   
   <url>
-    <loc>https://doodlexu.github.io/tags/index.html</loc>
-    
-    <lastmod>2021-03-03</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://doodlexu.github.io/categories/index.html</loc>
     
     <lastmod>2021-03-02</lastmod>
@@ -126,6 +126,13 @@
   
   <url>
     <loc>https://doodlexu.github.io/categories/Devices/</loc>
+    <lastmod>2021-03-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://doodlexu.github.io/categories/Codecd/</loc>
     <lastmod>2021-03-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
