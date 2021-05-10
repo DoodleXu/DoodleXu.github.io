@@ -6,7 +6,7 @@
   <link href="https://doodlexu.github.io/atom.xml" rel="self"/>
   
   <link href="https://doodlexu.github.io/"/>
-  <updated>2021-03-11T15:52:58.000Z</updated>
+  <updated>2021-05-10T05:58:20.590Z</updated>
   <id>https://doodlexu.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://doodlexu.github.io/posts/59324/"/>
     <id>https://doodlexu.github.io/posts/59324/</id>
     <published>2021-03-11T14:10:46.000Z</published>
-    <updated>2021-03-11T15:52:58.000Z</updated>
+    <updated>2021-05-10T05:58:20.590Z</updated>
     
     <content type="html"><![CDATA[<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>一次偶然的机会，在用macOS外接显示器的时候，用HDMI接口连接带音响的屏幕时，无法调节音量。显示<code>所选设备没有输出控制</code>。随即去找原因，本以为是Bug这么简单，没想到这居然还是个<code>feature</code>。</p><h1 id="背后的故事"><a href="#背后的故事" class="headerlink" title="背后的故事"></a>背后的故事</h1><p>首先<code>HDMI</code>全称叫高清多媒体接口（High Definition Multimedia Interface，HDMI）是一种全数字化视频和声音发送接口，可以发送未压缩的音频及视频信号。之所以他能出现上文所描述的现象，是因为 macOS 检测到你HDMI接口所连接的设备支持音频输出时，他会以<code>数字音频的方式输出</code>而不走 DAC（数模转换器），系统的音量控制好像只能是经过 DAC 出来的模拟信号来控制，而数字音频输出要保证信号的完整性，从而绕过了 DAC 所以不能调节音量。</p><p>其次，调节音量这个功能应该由功放来做，因为一旦调整了音量就说明系统已经改变了数字流，而不是“无损”音源了。并且许多情况使用HDMI作为输出的时候，可能不仅仅是往外放上接。这种情况如果要做进一步处理，就要尽量保证处理流程中的每一步都不能损失信息，这也是数字信号诞生的目的。用一种不太严谨的说法，数字信号本身人就不能被直接听到，后面要接 DAC 这样就会造成信号的失真。综上所述，造成信息损失的步骤应该放在最后一步，这也是macOS在HDMI输出音频信号时，无法调节音量的根本原因。</p><h1 id="特例"><a href="#特例" class="headerlink" title="特例"></a>特例</h1><p>在上述条件的基础上，我也找到了<code>特例</code>，那就是我们的视窗系统——Windows。它无视输出接口类型与协议。系统默认在输出前就过了一遍 DAC， 所以可以支持系统条件HDMI的音量。</p><h1 id="我的一些看法"><a href="#我的一些看法" class="headerlink" title="我的一些看法"></a>我的一些看法</h1><p>这件事情的一开始我也以为是macOS的Bug，在网上找方法，随即看到了<a href="https://www.v2ex.com/t/242238?p=2">V2EX</a>上的讨论, 才涨了见识。于是整理出这篇文章。不过很可惜的是，这篇帖子已经沦为了撕逼贴。正如上面的特例所描述那样，其实这两款系统的处理方式都没有错，并不至于撕出个谁对谁错。</p><p>出于用户的方便考虑，支持直接调节音量也挺好，毕竟需要无损音源的专业人员，和所有其他用户的数量比起来，音质好像也没那么重要了。</p><p>出于理性考虑，macOS的做法也是正确的。将有损步骤放到最后一步，以得到最佳音源。</p>]]></content>
     
@@ -37,6 +37,23 @@
     
     
     <category term="HDMI, macOS， 音量， 数字音频" scheme="https://doodlexu.github.io/tags/HDMI-macOS%EF%BC%8C-%E9%9F%B3%E9%87%8F%EF%BC%8C-%E6%95%B0%E5%AD%97%E9%9F%B3%E9%A2%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>reveal.js一个绝妙的Web演示文稿框架</title>
+    <link href="https://doodlexu.github.io/posts/59324/"/>
+    <id>https://doodlexu.github.io/posts/59324/</id>
+    <published>2021-03-11T14:10:46.000Z</published>
+    <updated>2021-05-10T05:59:50.259Z</updated>
+    
+    
+    
+    
+    <category term="知识" scheme="https://doodlexu.github.io/categories/%E7%9F%A5%E8%AF%86/"/>
+    
+    
+    <category term="js, web框架" scheme="https://doodlexu.github.io/tags/js-web%E6%A1%86%E6%9E%B6/"/>
     
   </entry>
   
