@@ -6,7 +6,7 @@
   <link href="https://doodlexu.github.io/atom.xml" rel="self"/>
   
   <link href="https://doodlexu.github.io/"/>
-  <updated>2021-05-14T23:45:19.076Z</updated>
+  <updated>2021-05-14T23:56:02.425Z</updated>
   <id>https://doodlexu.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>入门靶场学习记录</title>
+    <link href="https://doodlexu.github.io/posts/undefined/"/>
+    <id>https://doodlexu.github.io/posts/undefined/</id>
+    <published>2021-05-14T23:50:48.000Z</published>
+    <updated>2021-05-14T23:56:02.425Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Brute-Force-暴力破解"><a href="#Brute-Force-暴力破解" class="headerlink" title="Brute Force 暴力破解"></a>Brute Force 暴力破解</h1><blockquote><p>爆破永远是最经典的，也是最有暴力美学的渗透方式。</p></blockquote><h2 id="low"><a href="#low" class="headerlink" title="low"></a>low</h2>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Brute-Force-暴力破解&quot;&gt;&lt;a href=&quot;#Brute-Force-暴力破解&quot; class=&quot;headerlink&quot; title=&quot;Brute Force 暴力破解&quot;&gt;&lt;/a&gt;Brute Force 暴力破解&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;爆</summary>
+      
+    
+    
+    
+    <category term="知识" scheme="https://doodlexu.github.io/categories/%E7%9F%A5%E8%AF%86/"/>
+    
+    
+    <category term="信息安全, 入门, 靶场" scheme="https://doodlexu.github.io/tags/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8-%E5%85%A5%E9%97%A8-%E9%9D%B6%E5%9C%BA/"/>
+    
+  </entry>
   
   <entry>
     <title>对HDMI输出音量调节的一些看法</title>
